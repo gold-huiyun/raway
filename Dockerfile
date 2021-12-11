@@ -11,6 +11,7 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     QL_BRANCH=${QL_BRANCH}
 WORKDIR ${QL_DIR}
 RUN set -x \
+    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
     && apk update -f \
     && apk upgrade \
     && apk --no-cache add -f bash \
@@ -40,6 +41,7 @@ RUN set -x \
     && chmod 777 ${QL_DIR}/docker/*.sh \
     && npm install -g pnpm \
     && pnpm install -g pm2 \
+    && npm cache verify \
     && pnpm install -g ts-node typescript tslib \
     && rm -rf /root/.npm \
     && pnpm install --prod \
